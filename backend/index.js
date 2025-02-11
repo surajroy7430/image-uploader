@@ -150,7 +150,6 @@ app.delete("/files/:id", async (req, res) => {
 });
 
 app.use((req, res) => res.send(`Server running on - ${BASE_URL}`));
-
 app.listen(PORT, () => console.log(`Server running on port - ${PORT}`));
 
 module.exports = app;
