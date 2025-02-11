@@ -100,7 +100,7 @@ app.post("/upload", upload.array("files"), async (req, res) => {
       const fileKey = file.location.split("/").pop(); // Extract filename from S3 URL
       return {
         filename: file.originalname.split("-").slice(0, -2).join("-"),
-        fileUrl: `https://s.minxsmusic.com/${fileKey}`, // Custom Vercel URL
+        fileUrl: `https://mm-images.vercel.app/${fileKey}`, // Custom Vercel URL
       };
     });
 
