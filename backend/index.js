@@ -97,10 +97,9 @@ app.post("/upload", upload.array("files"), async (req, res) => {
 
   try {
     const newFiles = req.files.map((file) => {
-      const fileKey = file.location.split("/").pop(); // Extract filename from S3 URL
       return {
         filename: file.originalname.split("-").slice(0, -2).join("-"),
-        fileUrl: `https://mm-images.vercel.app/${fileKey}`, // Custom Vercel URL
+        fileUrl: file.location, // AWS S3 URL
       };
     });
 
