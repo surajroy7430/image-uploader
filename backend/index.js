@@ -8,7 +8,7 @@ require("dotenv").config();
 
 const app = express();
 app.use(express.json());
-app.use(cors({ origin: "*" }));
+app.use(cors());
 
 const PORT = process.env.PORT || 4000;
 const BASE_URL = process.env.BASE_URL;
@@ -71,7 +71,7 @@ const upload = multer({
 async function connectDB() {
   try {
     await mongoose.connect(MONGO_URI, {
-      serverSelectionTimeoutMS: 2000,
+      serverSelectionTimeoutMS: 5000,
     });
     console.log("Connected to MongoDB successfully!");
   } catch (error) {
