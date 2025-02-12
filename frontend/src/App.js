@@ -190,7 +190,7 @@ function App() {
                         <th scope="row" className="text-center">
                           {index + 1}
                         </th>
-                        <td style={{ cursor: "text" }}>
+                        <td>
                           {file.filename.replace(/-/g, " ")}
                         </td>
                         <td className="text-center">
