@@ -155,38 +155,61 @@ function App() {
         {uploadedFiles.length === 0 ? (
           <p className="text-center">No images uploaded yet.</p>
         ) : (
-          <ul className="list-group mt-3">
-            {uploadedFiles.map((file) => (
-              <li
-                key={file._id}
-                className="list-group-item d-flex justify-content-between align-items-center bg-dark text-white border-light"
-              >
-                <label
-                  className="d-block text-truncate"
-                  style={{ cursor: "text" }}
-                >
-                  {file.filename.replace(/-/g, " ")}
-                </label>
-                <div>
-                  <a
-                    href={file.fileUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn btn-sm btn-success ms-2 me-2"
-                  >
+          <div className="table-responsive">
+            <table className="table table-dark table-bordered table-hover text-white">
+              <thead className="thead-light">
+                <tr>
+                  <th scope="col" className="text-center">
+                    #
+                  </th>
+                  <th scope="col">File Name</th>
+                  <th scope="col" className="text-center">
                     View
-                  </a>
-                  {" | "}
-                  <button
-                    className="btn btn-danger btn-sm ms-2"
-                    onClick={() => handleDelete(file._id)}
-                  >
+                  </th>
+                  <th scope="col" className="text-center">
                     Delete
-                  </button>
-                </div>
-              </li>
-            ))}
-          </ul>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {uploadedFiles
+                  .slice() // Create a shallow copy to avoid modifying state
+                  .sort((a, b) =>
+                    a.filename
+                      .replace(/-/g, " ")
+                      .localeCompare(b.filename.replace(/-/g, " "))
+                  )
+                  .map((file, index) => (
+                    <tr key={file._id}>
+                      <th scope="row" className="text-center">
+                        {index + 1}
+                      </th>
+                      <td style={{ cursor: "text" }}>
+                        {file.filename.replace(/-/g, " ")}
+                      </td>
+                      <td className="text-center">
+                        <a
+                          href={file.fileUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="btn btn-success btn-sm"
+                        >
+                          View
+                        </a>
+                      </td>
+                      <td className="text-center">
+                        <button
+                          className="btn btn-danger btn-sm"
+                          onClick={() => handleDelete(file._id)}
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
     </div>
