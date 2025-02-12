@@ -165,7 +165,7 @@ function App() {
                   className="d-block text-truncate"
                   style={{ cursor: "text" }}
                 >
-                  {file.filename.replace(/-(?=[^-]*$)/, ' ').replace(/-/g, ' - ')}
+                  {file.filename.replace(/-/g, " ")}
                 </label>
                 <div>
                   <a
@@ -178,7 +178,7 @@ function App() {
                   </a>
                   {" | "}
                   <button
-                    className="btn btn-danger btn-sm me-2"
+                    className="btn btn-danger btn-sm ms-2"
                     onClick={() => handleDelete(file._id)}
                   >
                     Delete
