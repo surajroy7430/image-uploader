@@ -8,6 +8,7 @@ function App() {
   const [files, setFiles] = useState([]);
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
@@ -32,7 +33,7 @@ function App() {
     const validFiles = [];
     let fileError = "";
 
-    for (let i=0; i < selectedFiles.length; i++) {
+    for (let i = 0; i < selectedFiles.length; i++) {
       const file = selectedFiles[i];
       const fileType = file.type.split("/")[0];
 
@@ -55,9 +56,10 @@ function App() {
     }
 
     setUploading(true);
+    setUploadProgress(0);
 
     const formData = new FormData();
-    for (let i=0; i < files.length; i++) {
+    for (let i = 0; i < files.length; i++) {
       formData.append("files", files[i]);
     }
 
@@ -65,11 +67,17 @@ function App() {
       setTimeout(async () => {
         const { data } = await axios.post(`${BASE_URL}/upload`, formData, {
           headers: { "Content-Type": "multipart/form-data" },
+          onUploadProgress: (progressEvent) => {
+            const percentCompleted = Math.round(
+              (progressEvent.loaded * 100) / progressEvent.total
+            );
+            setUploadProgress(percentCompleted);
+          },
         });
 
         setUploading(false);
-
         setFiles([]);
+        setUploadProgress(0);
         document.getElementById("fileInput").value = "";
         // console.log(data.files)
 
@@ -77,6 +85,7 @@ function App() {
       }, 2000);
     } catch (error) {
       setUploading(false);
+      setUploadProgress(0);
       setError("Error uploading file!");
       console.error("Error uploading file:", error);
     }
@@ -109,6 +118,22 @@ function App() {
             onChange={handleFileChange}
           />
 
+          {/* Progress Bar */}
+          {uploading && (
+            <div className="progress mt-2">
+              <div
+                className="progress-bar progress-bar-striped progress-bar-animated bg-success"
+                role="progressbar"
+                style={{ width: `${uploadProgress}%` }}
+                aria-valuenow={uploadProgress}
+                aria-valuemin="0"
+                aria-valuemax="100"
+              >
+                {uploadProgress}%
+              </div>
+            </div>
+          )}
+
           {error && <div className="alert alert-danger mt-3">{error}</div>}
           {message && !error && (
             <div className="alert alert-info mt-3">{message}</div>
@@ -124,7 +149,9 @@ function App() {
         </div>
 
         {/* Uploaded Files List */}
-        <h4 className="mt-5 text-center mb-3 text-uppercase">Uploaded Images</h4>
+        <h4 className="mt-5 text-center mb-3 text-uppercase">
+          Uploaded Images
+        </h4>
         {uploadedFiles.length === 0 ? (
           <p className="text-center">No images uploaded yet.</p>
         ) : (
@@ -134,20 +161,29 @@ function App() {
                 key={file._id}
                 className="list-group-item d-flex justify-content-between align-items-center bg-dark text-white border-light"
               >
-                <a
-                  href={file.fileUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-info"
+                <label
+                  className="d-block text-truncate"
+                  style={{ cursor: "text" }}
                 >
-                  {file.filename}
-                </a>
-                <button
-                  className="btn btn-danger btn-sm"
-                  onClick={() => handleDelete(file._id)}
-                >
-                  Delete
-                </button>
+                  {file.filename.replace(/-/g, " ")}
+                </label>
+                <div>
+                  <a
+                    href={file.fileUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn btn-sm btn-success ms-2 me-2"
+                  >
+                    View
+                  </a>
+                  {" | "}
+                  <button
+                    className="btn btn-danger btn-sm"
+                    onClick={() => handleDelete(file._id)}
+                  >
+                    Delete
+                  </button>
+                </div>
               </li>
             ))}
           </ul>
