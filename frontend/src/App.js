@@ -149,11 +149,13 @@ function App() {
         </div>
 
         {/* Uploaded Files List */}
-        <h4 className="mt-5 text-center mb-3 text-uppercase">
-          Uploaded Images
-        </h4>
         {uploadedFiles.length === 0 ? (
-          <p className="text-center">No images uploaded yet.</p>
+          <>
+            <h4 className="mt-5 text-center mb-3 text-uppercase">
+              Uploaded Images
+            </h4>
+            <p className="text-center">No images uploaded yet.</p>
+          </>
         ) : (
           <>
             <h4 className="mt-5 text-center mb-3 text-uppercase">
