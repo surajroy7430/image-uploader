@@ -155,61 +155,66 @@ function App() {
         {uploadedFiles.length === 0 ? (
           <p className="text-center">No images uploaded yet.</p>
         ) : (
-          <div className="table-responsive">
-            <table className="table table-dark table-bordered table-hover text-white">
-              <thead className="thead-light">
-                <tr>
-                  <th scope="col" className="text-center">
-                    #
-                  </th>
-                  <th scope="col">File Name</th>
-                  <th scope="col" className="text-center">
-                    View
-                  </th>
-                  <th scope="col" className="text-center">
-                    Delete
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {uploadedFiles
-                  .slice() // Create a shallow copy to avoid modifying state
-                  .sort((a, b) =>
-                    a.filename
-                      .replace(/-/g, " ")
-                      .localeCompare(b.filename.replace(/-/g, " "))
-                  )
-                  .map((file, index) => (
-                    <tr key={file._id}>
-                      <th scope="row" className="text-center">
-                        {index + 1}
-                      </th>
-                      <td style={{ cursor: "text" }}>
-                        {file.filename.replace(/-/g, " ")}
-                      </td>
-                      <td className="text-center">
-                        <a
-                          href={file.fileUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="btn btn-success btn-sm"
-                        >
-                          View
-                        </a>
-                      </td>
-                      <td className="text-center">
-                        <button
-                          className="btn btn-danger btn-sm"
-                          onClick={() => handleDelete(file._id)}
-                        >
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-              </tbody>
-            </table>
-          </div>
+          <>
+            <h4 className="mt-5 text-center mb-3 text-uppercase">
+              Uploaded Images ({uploadedFiles.length})
+            </h4>
+            <div className="table-responsive">
+              <table className="table table-dark table-bordered table-hover text-white">
+                <thead className="thead-light">
+                  <tr>
+                    <th scope="col" className="text-center">
+                      #
+                    </th>
+                    <th scope="col">File Name</th>
+                    <th scope="col" className="text-center">
+                      View
+                    </th>
+                    <th scope="col" className="text-center">
+                      Delete
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {uploadedFiles
+                    .slice() // Create a shallow copy to avoid modifying state
+                    .sort((a, b) =>
+                      a.filename
+                        .replace(/-/g, " ")
+                        .localeCompare(b.filename.replace(/-/g, " "))
+                    )
+                    .map((file, index) => (
+                      <tr key={file._id}>
+                        <th scope="row" className="text-center">
+                          {index + 1}
+                        </th>
+                        <td style={{ cursor: "text" }}>
+                          {file.filename.replace(/-/g, " ")}
+                        </td>
+                        <td className="text-center">
+                          <a
+                            href={file.fileUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="btn btn-success btn-sm"
+                          >
+                            View
+                          </a>
+                        </td>
+                        <td className="text-center">
+                          <button
+                            className="btn btn-danger btn-sm"
+                            onClick={() => handleDelete(file._id)}
+                          >
+                            Delete
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            </div>
+          </>
         )}
       </div>
     </div>
